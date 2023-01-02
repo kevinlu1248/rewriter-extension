@@ -1,7 +1,7 @@
 # Rewriter 
 Rewriter (temporary name) is a chrome extension that revises your work. Currently this is only an MVP.
 
-https://user-images.githubusercontent.com/26889185/210197956-c9b05ede-9a17-4471-af98-d74bc416483d.mp4
+https://user-images.githubusercontent.com/26889185/210198502-12e756c6-b56a-48e7-8567-d61c1548066e.mp4
 
 ## Features
 * Suggests ways to revise your work
