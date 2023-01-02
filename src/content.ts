@@ -29,22 +29,33 @@ function replaceSelectedText(replacementText: string) {
 }
 
 // TODO: set up react to clean up this spaghetti 
-const div = document.createElement('div');
-div.setAttribute('style', `
+const bubble = document.createElement('div');
+const bubbleHeader = document.createElement('div');
+const bubbleBody = document.createElement('div');
+bubble.setAttribute('style', `
     z-index: 999; 
     position: fixed; 
     display: none;
     background-color: white;
-    border-radius: 5px;
-    padding: 5px;
-    minWidth: 200px;
+    border-radius: 10px;
+    width: 700px;
+    overflow: hidden;
 `);
-div.onblur = () => {
-    console.log('blur');
-    div.style.display = 'none';
+bubbleHeader.innerHTML = `<h3 style="padding: 0 5px; margin: 10px;">Suggestions</h3>`;
+bubbleBody.innerHTML = `<div style="padding: 10px; margin: 10px;">Loading...</div>`;
+document.onclick = (event) => {
+    let targetElement = event.target as HTMLElement;
+    do {
+        if (targetElement == bubble) {
+            return;
+        }
+        targetElement = targetElement.parentElement!;
+    } while (targetElement);
+    bubble.style.display = 'none';
 }
-div.innerHTML = "Loading...";
-document.body.appendChild(div);
+bubble.appendChild(bubbleHeader);
+bubble.appendChild(bubbleBody);
+document.body.appendChild(bubble);
 
 const handler = (event: KeyboardEvent) => {
     if (event.ctrlKey && event.altKey && event.key === 'e') {
@@ -52,29 +63,31 @@ const handler = (event: KeyboardEvent) => {
         const selectedText = getSelectedText();
         if (selectedText) {
             const {bottom, left} = position();
-            div.style.top = `${bottom}px`;
-            div.style.left = `${left}px`;
-            div.style.display = 'block';
-            div.innerHTML = "Loading...";
+            bubble.style.top = `${bottom}px`;
+            bubble.style.left = `${left}px`;
+            bubble.style.display = 'block';
+            bubbleBody.innerHTML = `<div style="padding: 10px; margin: 10px;">Loading...</div>`;
             (async () => {
                 const response = await chrome.runtime.sendMessage({text: selectedText});
-                div.innerHTML = '';
+                bubbleBody.innerHTML = '';
                 for (const text of response) {
                     const button = document.createElement('button');
                     button.setAttribute('style', `
                         border: none; 
                         background-color: white; 
+                        text-align: left;
                         width: 100%;
+                        padding: 10px;
                     `);
                     button.onmouseenter = () => button.style.backgroundColor = 'lightblue';
                     button.onmouseleave = () => button.style.backgroundColor = 'white';
                     button.innerText = text;
                     button.onclick = () => {
                         replaceSelectedText(text);
-                        div.style.display = 'none';
+                        bubble.style.display = 'none';
                     };
-                    div.appendChild(button);
-                    div.appendChild(document.createElement('br'))
+                    bubbleBody.appendChild(button);
+                    bubbleBody.appendChild(document.createElement('br'))
                 }
             })();
         }
