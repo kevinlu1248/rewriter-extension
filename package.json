@@ -1,0 +1,23 @@
+{
+  "name": "rewriter-extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kevinlu1248/rewriter-extension.git",
+  "author": "= <kevinlu1248@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/chrome": "^0.0.206",
+    "chrome-types": "^0.1.158",
+    "copy-webpack-plugin": "^11.0.0",
+    "rangeblock": "^1.2.0",
+    "selection-position": "^1.0.0",
+    "ts-loader": "^9.4.2",
+    "tsc-watch": "^6.0.0",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "webpack-cli": "^5.0.1"
+  }
+}
